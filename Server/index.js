@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import { register } from "./controllers/auth.js";
 import User from "./models/User.js";
+import { validate } from "./controllers/validate.js";
 
 /* CONGFIGURATIONS */
 dotenv.config();
@@ -33,12 +34,13 @@ mongoose.connect(process.env.MONGO_URL, {
 
 }).catch((error) => console.log(`${error} did not connect` ));
 
-/* ROUTES WITH FILES */
 app.post("/auth/register", register);
+
 
 // ROUTES
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.post("/validate", validate )
 
 app.get("/", (req, res) => {
   res.send("APP IS RUNNING");

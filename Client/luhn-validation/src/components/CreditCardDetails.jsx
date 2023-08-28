@@ -38,8 +38,13 @@ function CreditCardDetails() {
   };
 
   const validateCard = async () => {
+    
+    if (!cardNumber || !expiryDate || !cvv) {
+      setIsValid(false); 
+      return;
+    }
     try {
-      const response = await fetch('YOUR_BACKEND_API_URL', {
+      const response = await fetch('http://localhost:3001/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,16 +89,18 @@ function CreditCardDetails() {
                   value={cardNumber}
                   onChange={handleCardNumberChange}
                   placeholder="1234 5678 9012 3456"
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   id="cardHolder"
-                  label="Card Holder"
+                  label="Card Holder (Optional)"
                   variant="outlined"
                   value={cardHolder}
                   onChange={handleCardHolderChange}
+
                 />
               </Grid>
               <Grid item xs={6}>
@@ -105,6 +112,7 @@ function CreditCardDetails() {
                   value={expiryDate}
                   onChange={handleExpiryDateChange}
                   placeholder="MMYY"
+                  required
                 />
               </Grid>
               <Grid item xs={6}>
@@ -115,6 +123,7 @@ function CreditCardDetails() {
                   variant="outlined"
                   value={cvv}
                   onChange={handleCvvChange}
+                  required
                 />
               </Grid>
             </Grid>
@@ -130,7 +139,7 @@ function CreditCardDetails() {
           </form>
           {isValid === true && (
             <Alert severity="success" style={{ marginTop: '16px' }}>
-              Card is valid! and Added Successfully
+              Your Card is valid! 
               <Button
                 variant="contained"
                 color="primary"

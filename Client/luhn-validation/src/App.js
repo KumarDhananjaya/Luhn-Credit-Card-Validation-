@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/Login/index.jsx";
 import { useSelector } from "react-redux";
 import { CssBaseline } from "@mui/material";
+import HomePage from "./components/HomePage/index.jsx";
 
 function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
@@ -12,7 +13,7 @@ function App() {
         <CssBaseline/>
           <Routes>
             <Route path="/" element={<LoginPage/>} />
-            {/* <Route path="/home" element={isAuth ? <HomePage/> : <Navigate to="/"/>} /> */}
+            <Route path="/home" element={isAuth ? <HomePage/> : <Navigate to="/"/>} />
           </Routes>
       </BrowserRouter>
     </div>

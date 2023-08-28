@@ -48,23 +48,36 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    const savedUserResponse = await fetch(
-      "http://localhost:3001/auth/register",
-      {
+    try {
+      const userData = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+      };
+  
+      const response = await fetch("http://localhost:3001/auth/register", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+        body: JSON.stringify(userData), // Stringify the user data object
+      });
+  
+      if (response.ok) {
+        const savedUser = await response.json();
+        onSubmitProps.resetForm();
+  
+        if (savedUser) {
+          alert("Successfully registered");
+          setPageType("login");
+        }
+      } else {
+        const errorMessage = await response.text();
+        alert(`Registration failed: ${errorMessage}`);
       }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
-
-    if (savedUser) {
-      alert("Successfully registered");
-      setPageType("login");
+    } catch (error) {
+      console.error("Error during registration:", error);
     }
   };
 
@@ -105,7 +118,6 @@ const Form = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldValue,
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>

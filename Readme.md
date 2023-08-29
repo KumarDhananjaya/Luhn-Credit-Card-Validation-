@@ -61,11 +61,17 @@ Before you begin, ensure you have met the following requirements:
 11. You can now use the Credit Card Validation System locally.
 
 
-
-
 ## Features
 - User Authentication (Signup and Login)
 - Credit Card Validation using Luhn Algorithm 
 - Card Details Storage in MongoDB
+
+## Technologies Used
+1. React Js 
+2. Redux - State management
+3. Node Js 
+4. Express Js
+5. MongoDB and Mongoose for NoSQL Database storage
+6. JWT for Authentication
 
 

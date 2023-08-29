@@ -7,9 +7,13 @@ import helmet from "helmet";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import cardRoutes from "./routes/cards.js";
 import { register } from "./controllers/auth.js";
-import User from "./models/User.js";
 import { validate } from "./controllers/validate.js";
+import { verifyToken } from "./middleware/auth.js";
+import { createCard } from "./controllers/cards.js"
+
+
 
 /* CONGFIGURATIONS */
 dotenv.config();
@@ -35,12 +39,15 @@ mongoose.connect(process.env.MONGO_URL, {
 }).catch((error) => console.log(`${error} did not connect` ));
 
 app.post("/auth/register", register);
+app.post("/validate", validate )
+app.post("/cards", verifyToken, createCard);
 
 
 // ROUTES
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.post("/validate", validate )
+app.use("/cards", cardRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("APP IS RUNNING");

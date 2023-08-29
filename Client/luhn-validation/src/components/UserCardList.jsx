@@ -81,7 +81,7 @@ const UserCardList = ({ userId }) => {
                 />
                 <Button
                   variant="outlined"
-                  color="secondary"
+                  color="primary"
                   onClick={() => handleDeleteCard(card._id)}
                   style={{ marginLeft: '150px' }}
 

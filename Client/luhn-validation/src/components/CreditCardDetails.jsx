@@ -9,13 +9,24 @@ import {
   Button,
   Alert,
 } from '@mui/material';
+import { useDispatch, useSelector } from "react-redux";
+import { setCards } from "../state/index.js";
 
-function CreditCardDetails() {
+
+const CreditCardDetails= () => {
+
+  const dispatch = useDispatch();
+
   const [cardNumber, setCardNumber] = useState('');
   const [cardHolder, setCardHolder] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const [isValid, setIsValid] = useState(null);
+
+
+  const { _id } = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
+
 
   const handleCardNumberChange = (e) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 16);
@@ -67,7 +78,29 @@ function CreditCardDetails() {
   };
 
   const AddCard = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/cards', {
+        method: 'POST',
+        headers: {
+           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: _id,
+          cardNumber,        
+          cardHolder,      
+          expiryDate,         
+        }),
+      });
 
+      if (response.ok) {
+        const cards = await response.json();
+        dispatch(setCards({cards}));
+        setCards("");
+      }
+    } catch (error){
+      console.error('Error validating card:', error);
+    }
   };
 
 
